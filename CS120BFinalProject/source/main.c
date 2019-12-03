@@ -289,32 +289,32 @@ void ADC_init() {
 }
 unsigned short adc_x;
  
-unsigned char showingpo[5]={1,2,17,25,35};
-unsigned char showingpo_temp[5]={1,2,17,25,35};
-unsigned char trackingpo[5]={16,16,16,16,16};
-unsigned char trackingpo_temp[5]={16,16,16,16,16};
+unsigned char showingPosArray[5]={1,2,17,25,35};
+unsigned char showingPosTemp[5]={1,2,17,25,35};
+unsigned char trackingPosArray[5]={16,16,16,16,16};
+unsigned char trackingPosTemp[5]={16,16,16,16,16};
 unsigned char number0fblocks=0;
 unsigned char showuptime=1;
 unsigned char firstblock=1;
 //************
-unsigned char showingpo_do[5]={5,11,20,22,35};
-unsigned char showingpo_temp_do[5]={5,11,20,22,35};
-unsigned char trackingpo_do[5]={32,32,32,32,32};
-unsigned char trackingpo_temp_do[5]={32,32,32,32,32};
-unsigned char number0fblocks_do=0;
-unsigned char firstblock_do=1;
+unsigned char showingPosDo[5]={5,11,20,22,35};
+unsigned char showingPosTempDo[5]={5,11,20,22,35};
+unsigned char trackingPosDo[5]={32,32,32,32,32};
+unsigned char trackingPosTempDo[5]={32,32,32,32,32};
+unsigned char number0fblocksDo=0;
+unsigned char firstblockDo=1;
 unsigned char press;
 //**************
 unsigned char i;
 unsigned char input_hold='D';
 unsigned char up_dowm = 2;
-unsigned char player_po = 17;
-unsigned char score_time;
+unsigned char playerPos = 17;
+unsigned char scoreTime;
 unsigned char control_flash =0 ;
 unsigned char ten;
 unsigned char one;
-unsigned char higestten;
-unsigned char higestone;
+unsigned char higestTen;
+unsigned char higestOne;
 //**************music 
 unsigned char music_i;
 unsigned char music_change;
@@ -389,40 +389,40 @@ unsigned char highestscore;
 enum score_state{scoreinit};
 int score_tick(int state){	
 	eeprom_write_byte((uint8_t*)1,showuptime);
-	score_time = eeprom_read_byte((uint8_t*)1);
+	scoreTime = eeprom_read_byte((uint8_t*)1);
 	
 	highestscore = eeprom_read_byte((uint8_t*)2);
-	if(score_time > highestscore){
+	if(scoreTime > highestscore){
 		eeprom_write_byte((uint8_t*)2,showuptime);
 	}
 	highestscore = eeprom_read_byte((uint8_t*)2);
 	switch (state){
 		
 		case scoreinit:
-		ten = score_time /10;
-		one = score_time %10;
-		higestten =  highestscore/10;
-		higestone = highestscore %10;
-	if((player_po == trackingpo[firstblock-1] || player_po == trackingpo_do[firstblock_do-1])&&control_flash == 0){
+		ten = scoreTime /10;
+		one = scoreTime %10;
+		higestTen=  highestscore/10;
+		higestOne= highestscore %10;
+	if((playerpos == trackingPosArray[firstblock-1] || playerPos == trackingPosDo[firstblockDo-1])&&control_flash == 0){
 		input_hold = 's';
 		LCD_Clear();
 		LCD_Command(0x80);
 		LCD_String("lose  highest:");
-		LCD_Char(higestten+'0');
-		LCD_Char(higestone+'0');
+		LCD_Char(higestTen'0');
+		LCD_Char(higestOne'0');
 		LCD_Cursor(17);
 		LCD_String("score: ");
 		control_flash = 1;
 		LCD_Char(ten+'0');
 		LCD_Char(one+'0');
 	}
-	if(score_time>48 && control_flash == 0){
+	if(scoreTime>48 && control_flash == 0){
 		input_hold = 's';
 		LCD_Clear();
 		LCD_Command(0x80);
 		LCD_String("win  highest:");
-		LCD_Char(higestten+'0');
-		LCD_Char(higestone+'0');
+		LCD_Char(higestTen'0');
+		LCD_Char(higestOne'0');
 		LCD_Cursor(17);
 		LCD_String("score: ");
 		control_flash = 1;
@@ -438,10 +438,10 @@ int player_tick(int state){
 	switch(state){
 		case playerstart:
 			if(input_hold == 'A'){
-				if(up_dowm == 2 && player_po>16){player_po = player_po - 16;up_dowm = 3;}
-				if(up_dowm == 1 && player_po<17){player_po = player_po +16;up_dowm = 3;}
+				if(up_dowm == 2 && playerPos>16){playerPos = playerPos - 16;up_dowm = 3;}
+				if(up_dowm == 1 && playerPos<17){playerPos = playerPos + 16;up_dowm = 3;}
 				
-			LCD_Cursor(player_po);
+			LCD_Cursor(playerPos);
 			if(showuptime%2 == 1){LCD_Char(2);}
 			else{LCD_Char(1);}}
 			state = playerstart;
@@ -510,17 +510,17 @@ int menu_tick(int state){
 			
 //*************************************reset
 			
-			for(z=0;z<5;z++){showingpo[z]=showingpo_temp[z];}
-			for(z=0;z<5;z++){trackingpo[z]=trackingpo_temp[z];}
+			for(z=0;z<5;z++){showingPosArray[z]=showingPosTemp[z];}
+			for(z=0;z<5;z++){trackingPosArray[z]=trackingPosTemp[z];}
 //*********do
-			for(z=0;z<5;z++){showingpo_do[z]=showingpo_temp_do[z];}
-			for(z=0;z<5;z++){trackingpo_do[z]=trackingpo_temp_do[z];}
+			for(z=0;z<5;z++){showingPosDo[z]=showingPosTempDo[z];}
+			for(z=0;z<5;z++){trackingPosDo[z]=trackingPosTempDo[z];}
 //******
 			 number0fblocks=0;
-			 number0fblocks_do=0;
+			 number0fblocksD0=0;
 			 showuptime=1;
 			 firstblock=1;
-			firstblock_do=1;
+			firstblockDo=1;
 			control_flash = 0;
 //************************************reset everything
 			 LCD_Command(0x80);
@@ -540,29 +540,29 @@ int display1(int state){
 	switch(state){
 		case init:
 		if(input_hold == 'A'){
-			if(showuptime == showingpo[number0fblocks]){
+			if(showuptime == showingPosArray[number0fblocks]){
 				number0fblocks++;
 			}
 			
 			LCD_Clear();
 			i=firstblock;
 			for(i=firstblock;i<=number0fblocks;i++){
-				LCD_Cursor(trackingpo[i-1]);
+				LCD_Cursor(trackingPosArray[i-1]);
 				LCD_Char(0);
-				trackingpo[i-1]=trackingpo[i-1]-1;
-				if(trackingpo[i-1]==0){firstblock++;}
+				trackingPosArray[i-1]=trackingPosArray[i-1]-1;
+				if(trackingPosArray[i-1]==0){firstblock++;}
 			}
 		//**********
-			if(showuptime == showingpo_do[number0fblocks_do]){
-				number0fblocks_do++;
+			if(showuptime == showingPosDo[number0fblocksDo]){
+				number0fblocksDo++;
 			}
 			showuptime++;
-			i=firstblock_do;
-			for(i=firstblock_do;i<=number0fblocks_do;i++){
-				LCD_Cursor(trackingpo_do[i-1]);
+			i=firstblockDo;
+			for(i=firstblockDo;i<=number0fblocksDo;i++){
+				LCD_Cursor(trackingPosDo[i-1]);
 				LCD_Char(0);
-				trackingpo_do[i-1]=trackingpo_do[i-1]-1;
-				if(trackingpo_do[i-1]==16){firstblock_do++;}
+				trackingPosDo[i-1]=trackingPosDo[i-1]-1;
+				if(trackingPosDo[i-1]==16){firstblockDo++;}
 			}
 		//**********
 		}
