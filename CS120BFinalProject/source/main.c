@@ -11,8 +11,7 @@
 #include "scheduler.h"
 #include <avr/eeprom.h>	
 #include "keypad.h"
-#include "user.h"
-#include "timer.h"
+#include "SetTimer.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -403,13 +402,13 @@ int score_tick(int state){
 		one = scoreTime %10;
 		higestTen=  highestscore/10;
 		higestOne= highestscore %10;
-	if((playerpos == trackingPosArray[firstblock-1] || playerPos == trackingPosDo[firstblockDo-1])&&control_flash == 0){
+	if((playerPos == trackingPosArray[firstblock-1] || playerPos == trackingPosDo[firstblockDo-1])&&control_flash == 0){
 		input_hold = 's';
 		LCD_Clear();
 		LCD_Command(0x80);
 		LCD_String("lose  highest:");
-		LCD_Char(higestTen'0');
-		LCD_Char(higestOne'0');
+		LCD_Char(higestTen+'0');
+		LCD_Char(higestOne+'0');
 		LCD_Cursor(17);
 		LCD_String("score: ");
 		control_flash = 1;
@@ -421,8 +420,8 @@ int score_tick(int state){
 		LCD_Clear();
 		LCD_Command(0x80);
 		LCD_String("win  highest:");
-		LCD_Char(higestTen'0');
-		LCD_Char(higestOne'0');
+		LCD_Char(higestTen+'0');
+		LCD_Char(higestOne+'0');
 		LCD_Cursor(17);
 		LCD_String("score: ");
 		control_flash = 1;
@@ -517,7 +516,7 @@ int menu_tick(int state){
 			for(z=0;z<5;z++){trackingPosDo[z]=trackingPosTempDo[z];}
 //******
 			 number0fblocks=0;
-			 number0fblocksD0=0;
+			 number0fblocksDo=0;
 			 showuptime=1;
 			 firstblock=1;
 			firstblockDo=1;
